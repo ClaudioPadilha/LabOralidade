@@ -28,13 +28,78 @@ plot_comparison(spec_ref, spec_aluno, labels=["Referência", "Aluno"])
 
 ## CLI
 
-```bash
-# Espectro de um único arquivo
-lab-oralidade spectrum arquivo.wav --output espectro.png
+### `record` — Gravar áudio do microfone
 
-# Comparar dois áudios
+```bash
+# Gravar até pressionar Enter
+lab-oralidade record gravacao.wav
+
+# Gravar por duração fixa (5 segundos)
+lab-oralidade record gravacao.wav --duration 5
+
+# Especificar sample rate e dispositivo de entrada
+lab-oralidade record gravacao.wav -d 3 -sr 44100 --device 2
+```
+
+| Argumento | Descrição |
+|-----------|-----------|
+| `output_file` | Caminho para salvar o arquivo WAV (obrigatório) |
+| `--duration`, `-d` | Duração em segundos. Sem este argumento, grava até pressionar Enter |
+| `--sample-rate`, `-sr` | Taxa de amostragem em Hz (padrão: 22050) |
+| `--device` | Dispositivo de entrada (índice ou nome) |
+
+### `play` — Reproduzir áudio
+
+```bash
+# Reproduzir um arquivo
+lab-oralidade play gravacao.wav
+
+# Usar dispositivo de saída específico
+lab-oralidade play gravacao.wav --device 1
+```
+
+| Argumento | Descrição |
+|-----------|-----------|
+| `audio_file` | Arquivo de áudio para reproduzir (obrigatório) |
+| `--device` | Dispositivo de saída (índice ou nome) |
+
+### `spectrum` — Gerar espectro de frequência
+
+```bash
+# Exibir espectro na tela
+lab-oralidade spectrum gravacao.wav
+
+# Salvar espectro como imagem
+lab-oralidade spectrum gravacao.wav --output espectro.png
+
+# Ajustar parâmetros FFT
+lab-oralidade spectrum gravacao.wav --n-fft 4096 --max-freq 8000
+```
+
+| Argumento | Descrição |
+|-----------|-----------|
+| `audio_file` | Arquivo de áudio para análise (obrigatório) |
+| `--output`, `-o` | Caminho para salvar a imagem do espectro |
+| `--n-fft` | Tamanho da FFT (padrão: 2048) |
+| `--max-freq` | Frequência máxima exibida em Hz (padrão: 5000) |
+
+### `compare` — Comparar espectros de dois áudios
+
+```bash
+# Comparar e exibir na tela
+lab-oralidade compare referencia.wav aluno.wav
+
+# Salvar comparação como imagem
 lab-oralidade compare referencia.wav aluno.wav --output comparacao.png
 ```
+
+| Argumento | Descrição |
+|-----------|-----------|
+| `reference` | Arquivo de áudio de referência (obrigatório) |
+| `target` | Arquivo de áudio do aluno (obrigatório) |
+| `--output`, `-o` | Caminho para salvar a imagem da comparação |
+| `--n-fft` | Tamanho da FFT (padrão: 2048) |
+| `--max-freq` | Frequência máxima exibida em Hz (padrão: 5000) |
 
 ## Testes
 
