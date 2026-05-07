@@ -1,29 +1,74 @@
 # LabOralidade
 
-Ferramenta de análise espectral de áudio para aulas de fonética. Lê arquivos de áudio e produz espectros de Fourier para que alunos possam comparar suas pronúncias com referências e aprimorar a fala.
+Ferramenta de análise de áudio para aulas de fonética. Grava, reproduz e analisa arquivos de áudio produzindo espectros de Fourier e contornos de pitch (F0) para que alunos possam comparar suas pronúncias com referências e aprimorar a fala.
+
+## Funcionalidades
+
+- **Gravação e reprodução** — Captura áudio do microfone (duração fixa ou livre) e reproduz gravações
+- **Espectro de frequência** — Análise FFT com visualização do espectro de magnitudes
+- **Contorno de Pitch (F0)** — Extração da frequência fundamental via Praat/parselmouth
+- **Comparação de pitch** — Alinha contornos por tempo normalizado, calcula similaridade (MAE, RMSE, correlação em semitons) e gera feedback textual com regiões que precisam de atenção
 
 ## Instalação
 
 ```bash
+python -m venv laborvenv
+source laborvenv/bin/activate
 pip install -e ".[dev]"
 ```
 
 ## Uso rápido
 
+### Comparação de pitch (caso principal)
+
+```python
+from lab_oralidade import extract_pitch_contour, compare_pitch_contours, generate_feedback
+from lab_oralidade import plot_pitch_contour_comparison
+
+# Extrair contornos de pitch
+ref_contour = extract_pitch_contour("samples/referencia.wav")
+aluno_contour = extract_pitch_contour("samples/aluno.wav")
+
+# Comparar (normaliza tempo, converte para semitons, calcula métricas)
+result = compare_pitch_contours(ref_contour, aluno_contour)
+
+# Feedback textual
+print(generate_feedback(result))
+
+# Visualização (overlay + gráfico de diferença)
+plot_pitch_contour_comparison(result, output_path="comparacao_pitch.png")
+```
+
+### Análise espectral
+
 ```python
 from lab_oralidade import AudioSignal, SpectrumAnalyzer, plot_comparison
 
-# Carregar áudios
 referencia = AudioSignal.from_file("samples/referencia.wav")
 aluno = AudioSignal.from_file("samples/aluno.wav")
 
-# Calcular espectros
 analyzer = SpectrumAnalyzer()
 spec_ref = analyzer.compute(referencia)
 spec_aluno = analyzer.compute(aluno)
 
-# Visualizar comparação
 plot_comparison(spec_ref, spec_aluno, labels=["Referência", "Aluno"])
+```
+
+## Fluxo completo via CLI
+
+```bash
+# 1. Gravar referência (3 segundos)
+lab-oralidade record samples/referencia.wav -d 3
+
+# 2. Gravar aluno
+lab-oralidade record samples/aluno.wav -d 3
+
+# 3. Ouvir para conferir
+lab-oralidade play samples/referencia.wav
+lab-oralidade play samples/aluno.wav
+
+# 4. Comparar contornos de pitch
+lab-oralidade pitch-compare samples/referencia.wav samples/aluno.wav -o resultado.png
 ```
 
 ## CLI
