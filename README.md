@@ -101,6 +101,50 @@ lab-oralidade compare referencia.wav aluno.wav --output comparacao.png
 | `--n-fft` | Tamanho da FFT (padrão: 2048) |
 | `--max-freq` | Frequência máxima exibida em Hz (padrão: 5000) |
 
+### `pitch` — Extrair contorno de pitch (F0)
+
+```bash
+# Exibir gráfico de pitch na tela
+lab-oralidade pitch gravacao.wav
+
+# Salvar como imagem
+lab-oralidade pitch gravacao.wav --output pitch.png
+
+# Ajustar parâmetros de detecção
+lab-oralidade pitch gravacao.wav --floor 50 --ceiling 400 --time-step 0.005
+```
+
+| Argumento | Descrição |
+|-----------|-----------|
+| `audio_file` | Arquivo de áudio para análise (obrigatório) |
+| `--output`, `-o` | Caminho para salvar a imagem do contorno |
+| `--time-step` | Passo temporal em segundos (padrão: 0.01) |
+| `--floor` | F0 mínimo em Hz (padrão: 75) |
+| `--ceiling` | F0 máximo em Hz (padrão: 600) |
+
+### `pitch-compare` — Comparar contornos de pitch de dois áudios
+
+```bash
+# Comparar e exibir métricas + gráfico
+lab-oralidade pitch-compare referencia.wav aluno.wav
+
+# Salvar gráfico de comparação
+lab-oralidade pitch-compare referencia.wav aluno.wav --output comparacao_pitch.png
+
+# Ajustar limiar de desvio (semitons)
+lab-oralidade pitch-compare referencia.wav aluno.wav --threshold 1.5
+```
+
+| Argumento | Descrição |
+|-----------|-----------|
+| `reference` | Arquivo de áudio de referência (obrigatório) |
+| `target` | Arquivo de áudio do aluno (obrigatório) |
+| `--output`, `-o` | Caminho para salvar a imagem da comparação |
+| `--time-step` | Passo temporal em segundos (padrão: 0.01) |
+| `--floor` | F0 mínimo em Hz (padrão: 75) |
+| `--ceiling` | F0 máximo em Hz (padrão: 600) |
+| `--threshold` | Limiar de desvio em semitons (padrão: 2.0) |
+
 ## Testes
 
 ```bash
