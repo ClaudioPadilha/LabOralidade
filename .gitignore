@@ -8,6 +8,7 @@ build/
 *.egg
 .venv/
 venv/
+laborvenv/
 env/
 .env
 *.so
@@ -19,4 +20,5 @@ htmlcov/
 *.mp3
 *.flac
 !samples/.gitkeep
+*.png
 .DS_Store
