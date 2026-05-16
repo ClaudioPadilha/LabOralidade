@@ -54,6 +54,11 @@ def compare_pitch_contours(
         reference = reference.smooth(smooth_kernel)
         target = target.smooth(smooth_kernel)
 
+    # Trim leading/trailing unvoiced frames so normalization
+    # aligns speech onset to speech onset
+    reference = reference.trim_unvoiced()
+    target = target.trim_unvoiced()
+
     # Normalize times and convert to semitones
     ref_norm_times = reference.normalized_times()
     tgt_norm_times = target.normalized_times()

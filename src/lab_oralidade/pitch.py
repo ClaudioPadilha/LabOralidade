@@ -68,6 +68,22 @@ class PitchContour:
             return np.zeros_like(self.times)
         return (self.times - t_min) / (t_max - t_min)
 
+    def trim_unvoiced(self) -> PitchContour:
+        """Remove leading and trailing unvoiced (NaN) frames.
+
+        Keeps the contour from the first voiced frame to the last voiced
+        frame, so that time normalization aligns speech onset to speech onset.
+        """
+        voiced = self.voiced_mask
+        if not np.any(voiced):
+            return self
+        first = np.argmax(voiced)
+        last = len(voiced) - 1 - np.argmax(voiced[::-1])
+        return PitchContour(
+            times=self.times[first : last + 1].copy(),
+            f0_values=self.f0_values[first : last + 1].copy(),
+        )
+
 
 def extract_pitch_contour(
     sound_path: str | Path,

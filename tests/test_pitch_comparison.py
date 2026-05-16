@@ -134,3 +134,34 @@ class TestPitchContourMethods:
         norm = contour.normalized_times()
         assert norm[0] == pytest.approx(0.0)
         assert norm[-1] == pytest.approx(1.0)
+
+    def test_trim_unvoiced(self):
+        """Trimming should remove leading/trailing NaN frames."""
+        n_frames = 100
+        times = np.linspace(0, 1.0, n_frames)
+        f0 = np.full(n_frames, np.nan)
+        f0[20:80] = 200.0  # voiced only in the middle
+
+        contour = PitchContour(times=times, f0_values=f0)
+        trimmed = contour.trim_unvoiced()
+
+        assert len(trimmed.f0_values) == 60
+        assert np.all(~np.isnan(trimmed.f0_values))
+        assert trimmed.times[0] == pytest.approx(times[20])
+        assert trimmed.times[-1] == pytest.approx(times[79])
+
+    def test_offset_contours_align_after_trim(self):
+        """Two identical signals with different leading silence should align."""
+        n = 100
+        # Reference: 20 silent + 80 voiced
+        ref_f0 = np.full(n, np.nan)
+        ref_f0[20:] = 200.0
+        ref = PitchContour(times=np.linspace(0, 1.0, n), f0_values=ref_f0)
+
+        # Target: 50 silent + 50 voiced (same F0)
+        tgt_f0 = np.full(n, np.nan)
+        tgt_f0[50:] = 200.0
+        tgt = PitchContour(times=np.linspace(0, 1.0, n), f0_values=tgt_f0)
+
+        result = compare_pitch_contours(ref, tgt)
+        assert result.mae_semitones == pytest.approx(0.0, abs=0.1)
