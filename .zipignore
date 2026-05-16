@@ -1,0 +1,12 @@
+laborvenv
+.venv
+venv
+__pycache__
+.pytest_cache
+.ruff_cache
+.git
+tests
+*.png
+*.wav
+*.mp3
+*.egg-info

@@ -1,6 +1,9 @@
 #!/bin/bash
 # Azure App Service startup script for Streamlit
-pip install -e /tmp/8deb2f6a3d4a5f3 2>/dev/null || pip install -e .
+
+# Install local package (not in requirements.txt — Oryx doesn't support -e .)
+pip install --no-deps -e . 2>/dev/null
+
 python -m streamlit run app.py \
     --server.port 8000 \
     --server.address 0.0.0.0 \
