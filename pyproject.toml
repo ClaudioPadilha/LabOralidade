@@ -25,6 +25,9 @@ dev = [
     "pytest-cov>=4.1",
     "ruff>=0.3",
 ]
+web = [
+    "streamlit>=1.40",
+]
 
 [project.scripts]
 lab-oralidade = "lab_oralidade.cli:main"

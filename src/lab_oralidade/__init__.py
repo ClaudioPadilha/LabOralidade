@@ -1,6 +1,6 @@
 """LabOralidade – análise espectral de áudio para fonética."""
 
-from lab_oralidade.audio import AudioSignal
+from lab_oralidade.audio import AudioSignal, save_temp_wav
 from lab_oralidade.pitch import PitchContour, extract_pitch_contour
 from lab_oralidade.pitch_comparison import (
     PitchComparisonResult,
@@ -33,6 +33,7 @@ __all__ = [
     "plot_pitch_comparison",
     "plot_pitch_contour_comparison",
     "plot_spectrum",
+    "save_temp_wav",
     "record",
     "record_until_enter",
     "save_recording",
