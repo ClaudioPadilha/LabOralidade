@@ -8,6 +8,7 @@ Ferramenta de análise de áudio para aulas de fonética. Grava, reproduz e anal
 - **Espectro de frequência** — Análise FFT com visualização do espectro de magnitudes
 - **Contorno de Pitch (F0)** — Extração da frequência fundamental via Praat/parselmouth
 - **Comparação de pitch** — Alinha contornos por tempo normalizado, calcula similaridade (MAE, RMSE, correlação em semitons) e gera feedback textual com regiões que precisam de atenção
+- **Interface web (Streamlit)** — Aplicação no navegador para gravar, analisar e comparar áudios sem usar a linha de comando
 
 ## Instalação
 
@@ -16,6 +17,26 @@ python -m venv laborvenv
 source laborvenv/bin/activate
 pip install -e ".[dev]"
 ```
+
+## Interface Web (Streamlit)
+
+A forma mais simples de usar a ferramenta é pela interface web, que permite gravar pelo microfone, carregar arquivos, analisar espectro e pitch, e comparar pronúncias — tudo no navegador.
+
+```bash
+# Ativar o ambiente virtual (se ainda não estiver ativo)
+source laborvenv/bin/activate
+
+# Iniciar a interface web
+streamlit run app.py
+```
+
+O Streamlit abre automaticamente o navegador em **http://localhost:8501**. Caso não abra, acesse esse endereço manualmente. Para usar outra porta:
+
+```bash
+streamlit run app.py --server.port 8080
+```
+
+Pressione `Ctrl+C` no terminal para encerrar o servidor.
 
 ## Uso rápido
 
